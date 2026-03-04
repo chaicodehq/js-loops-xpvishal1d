@@ -31,4 +31,43 @@
  */
 export function sabziMandiBill(shoppingList, priceList) {
   // Your code here
+
+  // Basic validation
+  if (
+    !Array.isArray(shoppingList) ||
+    typeof priceList !== "object" ||
+    priceList === null
+  ) {
+    return { item: [], totalBill: 0 };
+  }
+
+  let items = [];
+  let totalBill = 0;
+
+  for (let item of shoppingList) {
+    // Skip if item name not in priceList
+    if (!(item.name in priceList)) {
+      continue;
+    }
+
+    let pricePerKg = priceList[item.name];
+
+    // Skip if too expensive
+    if (pricePerKg > 80) {
+      continue;
+    }
+
+    // Calculate cost
+    let cost = item.qty * pricePerKg;
+
+    items.push({
+      name: item.name,
+      qty: item.qty,
+      cost: cost,
+    });
+
+    totalBill += cost;
+  }
+
+  return { items, totalBill };
 }
